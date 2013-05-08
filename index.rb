@@ -1,18 +1,10 @@
 require 'sinatra'
 require 'sqlite3'
+require 'sequel'
+
 
 get '/' do
-  begin
-
-    db = SQLite3::Database.open 'test.db'
-    "Success!"
-
-  rescue SQLite3::Exception => e
-
-    puts "Exception Occured"
-    puts e
-
-  ensure
-    db.close if db
-  end
+  @DB = Sequel.connect('sqlite://test.db')
+  @test = @DB[:Cars].all
+  erb :home
 end
